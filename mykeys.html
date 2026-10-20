@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>MyKeys - Log In</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Tells js/mykeys.js that this is the login page, so it doesn't send us here again. -->
+  <script>var isLoginPage = true;</script>
+  <script src="js/mykeys.js"></script>
+
+  <!-- Styles just for this page. They go on top of css/style.css -->
+  <style>
+    header {
+      background-color: rgb(125, 255, 105);
+    }
+
+    /* The white card in the middle that holds the form */
+    .login-box {
+      max-width: 340px;
+      margin: 30px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      text-align: left;
+    }
+
+    .login-box label {
+      display: block;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .login-box input {
+      width: 100%;
+      box-sizing: border-box; /* keeps the box from poking out of the card */
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+    }
+
+    /* Turns the border green when you click into a box */
+    .login-box input:focus {
+      border-color: rgb(125, 255, 105);
+      outline: none;
+    }
+
+    .login-box button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: black; /* black is easier to read than white on bright green */
+      background-color: rgb(125, 255, 105);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .login-box button:hover {
+      background-color: rgb(95, 220, 75);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🔑 MyKeys</h1>
+  </header>
+
+  <main>
+    <form class="login-box" id="login-form">
+      <p>Log in to MyKeys</p>
+      <label for="username">Username</label>
+      <input type="text" id="username" required autocomplete="username">
+      <button type="submit">Log In</button>
+    </form>
+  </main>
+
+  <footer style="background-color: grey; text-align: center; padding: 10px; margin-top: 20px;">
+    <p>© 2026 Arjun Manoj. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // When someone clicks "Log In": remember their name, then go to the home page.
+    // saveName() lives in js/mykeys.js.
+    document.getElementById("login-form").addEventListener("submit", function (event) {
+      // Stop the browser from reloading the page (that's what forms do by default).
+      event.preventDefault();
+      var name = document.getElementById("username").value.trim();
+      if (name) {
+        saveName(name);
+        window.location.href = "index.html";
+      }
+    });
+  </script>
+</body>
+
+</html>
