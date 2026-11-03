@@ -88,6 +88,12 @@
       word-break: break-all;
     }
 
+    /* Small grey text that appears under the buttons */
+    .email-help {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
     .login-box button:hover {
       background-color: rgb(95, 220, 75);
     }
@@ -125,9 +131,12 @@
       <button type="submit">Make My Request</button>
 
       <div id="request-result" hidden>
-        <p>Here's your account request! Copy this line. It doesn't show your password, only its hash.</p>
+        <p>Here's your account request! It doesn't show your password, only its hash.
+          Click the button below to email it, and you'll get an account soon.</p>
         <code class="request-line" id="request-line"></code>
+        <button type="button" id="email-request">Email My Request</button>
         <button type="button" id="copy-line">Copy</button>
+        <p class="email-help" id="email-help"></p>
       </div>
       <p class="switch"><a href="#" id="show-login">Back to log in</a></p>
     </form>
@@ -201,6 +210,27 @@
         document.getElementById("request-line").textContent = '"' + name + '": "' + hash + '",';
         result.hidden = false;
       }
+    });
+
+    // The email address is kept in two pieces and only joined when someone
+    // clicks, so spam robots that scan web pages for addresses won't find it.
+    function requestEmail() {
+      return "mylomanoj" + "@" + "gmail.com";
+    }
+
+    // Opens the visitor's email app with the request already typed in.
+    // "mailto:" links open email apps the way "https:" links open websites.
+    // encodeURIComponent makes spaces and quote marks safe to put in a link.
+    document.getElementById("email-request").addEventListener("click", function () {
+      var line = document.getElementById("request-line").textContent;
+      var subject = "MyKeys account request";
+      var body = "Please add my MyKeys account:\n\n" + line;
+      window.location.href = "mailto:" + requestEmail() +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+      // In case they don't have an email app set up:
+      document.getElementById("email-help").textContent =
+        "Email app didn't open? Click Copy and email the line to " + requestEmail() + " yourself.";
     });
 
     // Copies the line so it's easy to paste into a message.
