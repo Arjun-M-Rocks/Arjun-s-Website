@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>How Well Would You Connect With Arjun?</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/mykeys.js?v=2"></script>
+
+  <style>
+    /* Same green header as the home page */
+    header {
+      background-color: rgb(125, 255, 105);
+    }
+
+    /* Each question sits in its own white card */
+    .question {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid rgb(50, 90, 220);
+      border-radius: 12px;
+      text-align: left;
+    }
+
+    /* The question text */
+    .question legend {
+      font-weight: bold;
+      padding: 0 8px;
+    }
+
+    /* Each choice gets its own line, with some space around it */
+    .question label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+    }
+
+    /* The "See My Score" button (same blue as the Log Out button) */
+    #check {
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      background-color: rgb(50, 90, 220);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #check:hover {
+      background-color: rgb(30, 60, 180);
+    }
+
+    /* The score that shows up at the end */
+    #result {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>How Well Would You Connect With Me?</h1>
+  </header>
+
+  <main>
+    <p>Answer these 5 questions and find out how much we have in common!</p>
+
+    <!-- A <form> groups all the questions together.
+         Each question is a <fieldset> (a box around related choices).
+         Radio buttons with the SAME name are a group: you can only pick one. -->
+    <form id="quiz">
+
+      <fieldset class="question">
+        <legend>1. Are you an early bird or a night owl?</legend>
+        <label><input type="radio" name="q1" value="early bird"> Early bird</label>
+        <label><input type="radio" name="q1" value="night owl"> Night owl</label>
+      </fieldset>
+
+      <fieldset class="question">
+        <legend>2. What's your zodiac sign?</legend>
+        <label><input type="radio" name="q2" value="aries"> Aries</label>
+        <label><input type="radio" name="q2" value="taurus"> Taurus</label>
+        <label><input type="radio" name="q2" value="gemini"> Gemini</label>
+        <label><input type="radio" name="q2" value="cancer"> Cancer</label>
+        <label><input type="radio" name="q2" value="leo"> Leo</label>
+        <label><input type="radio" name="q2" value="virgo"> Virgo</label>
+        <label><input type="radio" name="q2" value="libra"> Libra</label>
+        <label><input type="radio" name="q2" value="scorpio"> Scorpio</label>
+        <label><input type="radio" name="q2" value="sagittarius"> Sagittarius</label>
+        <label><input type="radio" name="q2" value="capricorn"> Capricorn</label>
+        <label><input type="radio" name="q2" value="aquarius"> Aquarius</label>
+        <label><input type="radio" name="q2" value="pisces"> Pisces</label>
+      </fieldset>
+
+      <fieldset class="question">
+        <legend>3. Do you like to work alone or in a group?</legend>
+        <label><input type="radio" name="q3" value="alone"> Alone</label>
+        <label><input type="radio" name="q3" value="group"> In a group</label>
+      </fieldset>
+
+      <fieldset class="question">
+        <legend>4. How do you feel about being on stage?</legend>
+        <label><input type="radio" name="q4" value="no fear"> Love it, no stage fright!</label>
+        <label><input type="radio" name="q4" value="nervous"> I get nervous</label>
+      </fieldset>
+
+      <fieldset class="question">
+        <legend>5. What are you in a large social environment?</legend>
+        <label><input type="radio" name="q5" value="vulnerable"> Socially vulnerable</label>
+        <label><input type="radio" name="q5" value="thriving"> Extremely socially thriving</label>
+        <label><input type="radio" name="q5" value="managing"> Managing well</label>
+      </fieldset>
+
+      <button type="submit" id="check">See My Score</button>
+    </form>
+
+    <p id="result"></p>
+    <p id="message"></p>
+
+    <a href="index.html">Back to the home page</a>
+  </main>
+
+  <script>
+    // Arjun's answers. The quiz compares the visitor's answers to these.
+    // The words must match the "value" of the radio buttons above exactly.
+    var myAnswers = {
+      q1: "early bird",
+      q2: "aquarius",
+      q3: "alone",
+      q4: "no fear",
+      q5: "vulnerable"
+    };
+
+    document.getElementById("quiz").addEventListener("submit", function (event) {
+      // Stop the form from reloading the page (that's what forms do by default).
+      event.preventDefault();
+
+      var matches = 0;
+      var total = 0;
+
+      // "for ... in" loops over every key in myAnswers: q1, q2, q3, q4, q5.
+      for (var question in myAnswers) {
+        total = total + 1;
+
+        // Find the radio button in this group that's checked (picked).
+        var picked = document.querySelector('input[name="' + question + '"]:checked');
+
+        // If nothing is picked, picked is null. Stop and ask them to finish.
+        if (picked === null) {
+          alert("Please answer all 5 questions first!");
+          return;
+        }
+
+        if (picked.value === myAnswers[question]) {
+          matches = matches + 1;
+        }
+      }
+
+      // Turn matches into a percentage, e.g. 3 out of 5 = 60%.
+      var percent = Math.round((matches / total) * 100);
+
+      // Pick a message depending on the score. The first "if" that's true wins.
+      var message;
+      if (percent === 100) {
+        message = "Perfect match! Are you secretly me?";
+      } else if (percent >= 80) {
+        message = "We'd basically be best friends!";
+      } else if (percent >= 60) {
+        message = "We'd get along great!";
+      } else if (percent >= 40) {
+        message = "We have some things in common.";
+      } else if (percent >= 20) {
+        message = "Opposites attract?";
+      } else {
+        message = "Total opposites! That could still be fun though.";
+      }
+
+      document.getElementById("result").textContent =
+        "We are a " + percent + "% match!";
+      document.getElementById("message").textContent = message;
+    });
+  </script>
+</body>
+
+</html>
