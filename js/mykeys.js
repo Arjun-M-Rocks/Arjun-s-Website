@@ -22,9 +22,8 @@ function forgetName() {
 // To add someone, open any page, press F12, click "Console" and type:
 //   await makeHash("their password")
 // then paste the result in here.
-// "test" (password: letmein) is just for trying it out. Remove it later!
 var accounts = {
-  "test": "1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032"
+  "arjun": "162a77baa33f471275f5a10adf547a8b4cd4e1cafc54b923f09757ae65471c5b"
 };
 
 // Scrambles text with SHA-256, a hashing recipe built into every browser.
