@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Website Anniversary Countdown</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/mykeys.js?v=2"></script>
+
+  <style>
+    /* The row that holds the 4 boxes (days, hours, minutes, seconds).
+       "flex" lines them up side by side, "wrap" lets them drop to a
+       new line on small phone screens. */
+    .countdown {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    /* Each colorful box */
+    .countdown div {
+      background-color: rgb(50, 90, 220);
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+      min-width: 100px;
+    }
+
+    /* The big number inside each box */
+    .countdown span {
+      display: block;
+      font-size: 3rem;
+      font-weight: 800;
+    }
+
+    /* The party message (hidden until the big day) */
+    #party {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Anniversary Countdown</h1>
+  </header>
+
+  <main>
+    <p>My website's anniversary is on <strong>February 11</strong>! 🎉 Time left:</p>
+
+    <!-- Each <span> has an id so JavaScript can find it and change the number. -->
+    <div class="countdown" id="countdown">
+      <div><span id="days">0</span>days</div>
+      <div><span id="hours">0</span>hours</div>
+      <div><span id="minutes">0</span>minutes</div>
+      <div><span id="seconds">0</span>seconds</div>
+    </div>
+
+    <p id="party" hidden>🎂 Happy Anniversary! 🎂</p>
+
+    <a href="index.html">Back to the home page</a>
+  </main>
+
+  <script>
+    // The big day. In JavaScript, months start counting at 0!
+    // January = 0, February = 1, March = 2 ... December = 11.
+    var MONTH = 1; // February
+    var DAY = 11;
+
+    // Works out when the NEXT February 11 is.
+    function nextAnniversary() {
+      var now = new Date();
+      // February 11 this year, at midnight (0 hours, 0 minutes, 0 seconds)
+      var target = new Date(now.getFullYear(), MONTH, DAY, 0, 0, 0);
+      // If this year's one already happened, use next year's.
+      // (We add 1 day so the party lasts all day on February 11.)
+      var endOfBigDay = new Date(now.getFullYear(), MONTH, DAY + 1, 0, 0, 0);
+      if (now >= endOfBigDay) {
+        target = new Date(now.getFullYear() + 1, MONTH, DAY, 0, 0, 0);
+      }
+      return target;
+    }
+
+    // Runs every second to update the numbers on the screen.
+    function update() {
+      var now = new Date();
+      // Subtracting two dates gives the difference in MILLISECONDS
+      // (1 second = 1000 milliseconds).
+      var msLeft = nextAnniversary() - now;
+
+      // If it's below 0, the big day is TODAY! Show the party message.
+      if (msLeft <= 0) {
+        document.getElementById("countdown").hidden = true;
+        document.getElementById("party").hidden = false;
+        return;
+      }
+      document.getElementById("countdown").hidden = false;
+      document.getElementById("party").hidden = true;
+
+      // Turn milliseconds into whole seconds. Math.floor rounds DOWN.
+      var totalSeconds = Math.floor(msLeft / 1000);
+
+      // Split the seconds into days, hours, minutes, seconds.
+      // % means "the remainder after dividing", e.g. 125 % 60 = 5.
+      var days = Math.floor(totalSeconds / 86400);           // 86400 seconds in a day
+      var hours = Math.floor((totalSeconds % 86400) / 3600); // 3600 seconds in an hour
+      var minutes = Math.floor((totalSeconds % 3600) / 60);  // 60 seconds in a minute
+      var seconds = totalSeconds % 60;
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+    }
+
+    update();                  // Run once right away...
+    setInterval(update, 1000); // ...then again every 1000 ms (1 second).
+  </script>
+</body>
+
+</html>
