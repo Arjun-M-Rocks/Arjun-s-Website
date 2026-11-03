@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Website Anniversary Countdown</title>
+  <title>Birthday Countdown</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -11,6 +11,11 @@
   <script src="js/mykeys.js?v=2"></script>
 
   <style>
+    /* Same green header as the home page (instead of the pink one from style.css) */
+    header {
+      background-color: rgb(125, 255, 105);
+    }
+
     /* The row that holds the 4 boxes (days, hours, minutes, seconds).
        "flex" lines them up side by side, "wrap" lets them drop to a
        new line on small phone screens. */
@@ -48,11 +53,11 @@
 
 <body>
   <header>
-    <h1>Anniversary Countdown</h1>
+    <h1>Birthday Countdown</h1>
   </header>
 
   <main>
-    <p>My website's anniversary is on <strong>February 11</strong>! 🎉 Time left:</p>
+    <p>My birthday is on <strong>February 11</strong>! Time left:</p>
 
     <!-- Each <span> has an id so JavaScript can find it and change the number. -->
     <div class="countdown" id="countdown">
@@ -62,7 +67,7 @@
       <div><span id="seconds">0</span>seconds</div>
     </div>
 
-    <p id="party" hidden>🎂 Happy Anniversary! 🎂</p>
+    <p id="party" hidden>Happy Birthday!</p>
 
     <a href="index.html">Back to the home page</a>
   </main>
@@ -74,7 +79,7 @@
     var DAY = 11;
 
     // Works out when the NEXT February 11 is.
-    function nextAnniversary() {
+    function nextBirthday() {
       var now = new Date();
       // February 11 this year, at midnight (0 hours, 0 minutes, 0 seconds)
       var target = new Date(now.getFullYear(), MONTH, DAY, 0, 0, 0);
@@ -92,7 +97,7 @@
       var now = new Date();
       // Subtracting two dates gives the difference in MILLISECONDS
       // (1 second = 1000 milliseconds).
-      var msLeft = nextAnniversary() - now;
+      var msLeft = nextBirthday() - now;
 
       // If it's below 0, the big day is TODAY! Show the party message.
       if (msLeft <= 0) {
