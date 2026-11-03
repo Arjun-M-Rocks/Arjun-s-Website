@@ -16,6 +16,38 @@ function forgetName() {
   try { localStorage.removeItem("mykeys-user"); } catch (e) {}
 }
 
+// The accounts that are allowed to log in: "username": "password hash".
+// We never write the real password here, only its hash (a scrambled
+// version that can't be turned back into the password).
+// To add someone, open any page, press F12, click "Console" and type:
+//   await makeHash("their password")
+// then paste the result in here.
+// "test" (password: letmein) is just for trying it out. Remove it later!
+var accounts = {
+  "test": "1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032"
+};
+
+// Scrambles text with SHA-256, a hashing recipe built into every browser.
+// The same text always gives the same hash, but you can't go backwards.
+// "async" means it takes a moment, so we have to "await" the answer.
+async function makeHash(text) {
+  var bytes = new TextEncoder().encode(text); // text -> numbers
+  var hashBytes = await crypto.subtle.digest("SHA-256", bytes);
+  // Turn each number into 2 hex characters (0-9, a-f) and join them up.
+  return Array.from(new Uint8Array(hashBytes))
+    .map(function (b) { return b.toString(16).padStart(2, "0"); })
+    .join("");
+}
+
+// Hashes the password they typed and checks it matches the saved hash.
+// toLowerCase() turns "Test" into "test", so capitals in the username
+// don't matter. That means usernames in the list above must be all lowercase!
+// (Passwords still care about capitals, which makes them harder to guess.)
+async function checkPassword(name, password) {
+  var hash = await makeHash(password);
+  return accounts[name.toLowerCase()] === hash;
+}
+
 // The login page sets isLoginPage = true before loading this file.
 // On every other page it doesn't exist, so we treat it as false.
 var onLoginPage = (typeof isLoginPage !== "undefined" && isLoginPage);

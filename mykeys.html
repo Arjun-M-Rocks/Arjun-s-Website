@@ -65,6 +65,29 @@
       cursor: pointer;
     }
 
+    /* Red message for a wrong password. Empty (so invisible) until then. */
+    .login-error {
+      color: rgb(200, 0, 0);
+      font-weight: bold;
+      margin: 10px 0 0;
+    }
+
+    /* The small "Request one" / "Back to log in" links */
+    .switch {
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    /* The box that shows the line to send to Arjun.
+       break-all lets the long hash wrap instead of poking out of the card. */
+    .request-line {
+      display: block;
+      padding: 10px;
+      background-color: #eee;
+      border-radius: 8px;
+      word-break: break-all;
+    }
+
     .login-box button:hover {
       background-color: rgb(95, 220, 75);
     }
@@ -81,7 +104,32 @@
       <p>Log in to MyKeys</p>
       <label for="username">Username</label>
       <input type="text" id="username" required autocomplete="username">
+      <label for="password">Password</label>
+      <!-- type="password" shows dots instead of the letters you type -->
+      <input type="password" id="password" required autocomplete="current-password">
+      <p class="login-error" id="login-error"></p>
       <button type="submit">Log In</button>
+      <p class="switch">No account? <a href="#" id="show-request">Request one</a></p>
+    </form>
+
+    <!-- "hidden" keeps this form invisible until someone clicks "Request one" -->
+    <form class="login-box" id="request-form" hidden>
+      <p>Request a MyKeys account</p>
+      <label for="new-username">Pick a username</label>
+      <input type="text" id="new-username" required autocomplete="off">
+      <label for="new-password">Pick a password</label>
+      <input type="password" id="new-password" required autocomplete="new-password">
+      <label for="new-password2">Type the password again</label>
+      <input type="password" id="new-password2" required autocomplete="new-password">
+      <p class="login-error" id="request-error"></p>
+      <button type="submit">Make My Request</button>
+
+      <div id="request-result" hidden>
+        <p>Send this line to Arjun. It doesn't show your password, only its hash!</p>
+        <code class="request-line" id="request-line"></code>
+        <button type="button" id="copy-line">Copy</button>
+      </div>
+      <p class="switch"><a href="#" id="show-login">Back to log in</a></p>
     </form>
   </main>
 
@@ -90,15 +138,80 @@
   </footer>
 
   <script>
-    // When someone clicks "Log In": remember their name, then go to the home page.
-    // saveName() lives in js/mykeys.js.
-    document.getElementById("login-form").addEventListener("submit", function (event) {
+    // When someone clicks "Log In": check their password, and if it's right,
+    // remember their name and go to the home page.
+    // saveName() and checkPassword() live in js/mykeys.js.
+    document.getElementById("login-form").addEventListener("submit", async function (event) {
       // Stop the browser from reloading the page (that's what forms do by default).
       event.preventDefault();
       var name = document.getElementById("username").value.trim();
-      if (name) {
+      var password = document.getElementById("password").value;
+      var error = document.getElementById("login-error");
+
+      if (await checkPassword(name, password)) {
         saveName(name);
         window.location.href = "index.html";
+      } else {
+        // Don't say WHICH one was wrong, so guessers don't learn real usernames.
+        error.textContent = "Wrong username or password.";
+      }
+    });
+
+    // Switching between the two forms: hide one, show the other.
+    var loginForm = document.getElementById("login-form");
+    var requestForm = document.getElementById("request-form");
+
+    document.getElementById("show-request").addEventListener("click", function (event) {
+      event.preventDefault(); // stop the "#" link from jumping to the top of the page
+      loginForm.hidden = true;
+      requestForm.hidden = false;
+    });
+
+    document.getElementById("show-login").addEventListener("click", function (event) {
+      event.preventDefault();
+      requestForm.hidden = true;
+      loginForm.hidden = false;
+    });
+
+    // When someone clicks "Make My Request": check everything, then show the line to send.
+    requestForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      var name = document.getElementById("new-username").value.trim().toLowerCase();
+      var password = document.getElementById("new-password").value;
+      var password2 = document.getElementById("new-password2").value;
+      var error = document.getElementById("request-error");
+      var result = document.getElementById("request-result");
+
+      error.textContent = "";
+      result.hidden = true;
+
+      // A "regular expression" is a pattern for checking text. This one means:
+      // only a-z, 0-9 or _, between 3 and 20 of them. That also stops anyone
+      // sneaking quote marks or code into the line Arjun pastes into mykeys.js!
+      if (!/^[a-z0-9_]{3,20}$/.test(name)) {
+        error.textContent = "Usernames need 3-20 letters, numbers or _ (no spaces).";
+      } else if (accounts.hasOwnProperty(name)) {
+        error.textContent = "Sorry, that username is taken!";
+      } else if (password.length < 8) {
+        error.textContent = "Passwords need at least 8 characters.";
+      } else if (password !== password2) {
+        error.textContent = "The two passwords don't match.";
+      } else {
+        var hash = await makeHash(password);
+        document.getElementById("request-line").textContent = '"' + name + '": "' + hash + '",';
+        result.hidden = false;
+      }
+    });
+
+    // Copies the line so it's easy to paste into a message.
+    document.getElementById("copy-line").addEventListener("click", async function () {
+      var line = document.getElementById("request-line").textContent;
+      try {
+        await navigator.clipboard.writeText(line);
+        this.textContent = "Copied!";
+      } catch (e) {
+        // Some browsers block copying, so the visitor can copy it by hand.
+        this.textContent = "Couldn't copy. Select the text and copy it yourself.";
       }
     });
   </script>
