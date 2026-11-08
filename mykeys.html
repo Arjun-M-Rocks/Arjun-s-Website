@@ -107,7 +107,7 @@
 
   <main>
     <form class="login-box" id="login-form">
-      <p>Log in to MyKeys</p>
+      <p>Log in to your arjunmanoj.com account</p>
       <label for="username">Username</label>
       <input type="text" id="username" required autocomplete="username">
       <label for="password">Password</label>
@@ -120,7 +120,7 @@
 
     <!-- "hidden" keeps this form invisible until someone clicks "Request one" -->
     <form class="login-box" id="request-form" hidden>
-      <p>Request a MyKeys account</p>
+      <p>Request an arjunmanoj.com account</p>
       <label for="new-username">Pick a username</label>
       <input type="text" id="new-username" required autocomplete="off">
       <label for="new-password">Pick a password</label>
@@ -223,8 +223,8 @@
     // encodeURIComponent makes spaces and quote marks safe to put in a link.
     document.getElementById("email-request").addEventListener("click", function () {
       var line = document.getElementById("request-line").textContent;
-      var subject = "MyKeys account request";
-      var body = "Please add my MyKeys account:\n\n" + line;
+      var subject = "arjunmanoj.com account request";
+      var body = "Please add my arjunmanoj.com account:\n\n" + line;
       window.location.href = "mailto:" + requestEmail() +
         "?subject=" + encodeURIComponent(subject) +
         "&body=" + encodeURIComponent(body);
