@@ -56,10 +56,10 @@ var currentUser = loadName();
 if (!currentUser && !onLoginPage) {
   // Nobody is logged in, so send them to the login page.
   // "replace" means the Back button won't bring them back here.
-  window.location.replace("mykeys.html");
+  window.location.replace("/mykeys.html");
 } else if (currentUser && onLoginPage) {
   // Already logged in, so skip the login page and go home.
-  window.location.replace("index.html");
+  window.location.replace("/index.html");
 }
 
 // Adds "Hi (name)!" and a Log Out button to the top bar.
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
   logout.textContent = "Log Out";
   logout.addEventListener("click", function () {
     forgetName();
-    window.location.href = "mykeys.html";
+    window.location.href = "/mykeys.html";
   });
 
   bar.appendChild(hello);

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+  404.html: GitHub Pages shows this page whenever someone visits
+  an address on the website that doesn't exist (like /pizza).
+  "404" is the code web servers use for "Not Found".
+
+  Every address here starts with "/" (like "/css/style.css").
+  That means "start from the top of the website", so it works
+  even if the missing page was deep inside, like /games/pizza.
+
+  It loads mykeys.js like every other page, so logged-in people
+  see the "Hi (name)!" bar, and everyone else goes to the login
+  page. That only works because mykeys.js sends people to
+  "/mykeys.html" (from the top of the website). If it said just
+  "mykeys.html", then on /games/pizza it would look for
+  /games/mykeys.html, which doesn't exist, so they'd land back
+  on this page and get sent again, over and over, forever!
+-->
+
+<head>
+  <title>Page Not Found - Arjun Manoj</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/mykeys.js?v=5"></script>
+
+  <style>
+    /* Same green header as the home page */
+    header {
+      background-color: rgb(125, 255, 105);
+    }
+
+    .big-404 {
+      font-size: 8rem;
+      font-weight: 800;
+      margin: 20px 0 0;
+      color: rgb(125, 255, 105);
+      /* A dark outline so the light green shows up on white */
+      -webkit-text-stroke: 3px black;
+    }
+
+    .wrong-address {
+      font-family: monospace;
+      background-color: #eee;
+      padding: 4px 8px;
+      border-radius: 6px;
+      word-break: break-all; /* long addresses wrap instead of sticking out */
+    }
+
+    .home-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-weight: bold;
+      color: white;
+      background-color: rgb(50, 90, 220);
+      border-radius: 8px;
+      text-decoration: none; /* no underline, so it looks like a button */
+    }
+
+    .home-button:hover {
+      background-color: rgb(30, 60, 180);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Arjun Manoj</h1>
+  </header>
+
+  <main>
+    <p class="big-404">404</p>
+    <h2>Oops! This page doesn't exist.</h2>
+    <p>You tried to visit <span class="wrong-address" id="wrong-address"></span></p>
+    <p>Maybe it got lost, maybe it was never here, or maybe there was a typo. 🤷</p>
+
+    <a class="home-button" href="/">Take me home</a>
+  </main>
+
+  <script>
+    // window.location.pathname is the part of the address after the
+    // website name. For arjunmanoj.com/pizza it would be "/pizza".
+    // textContent (not innerHTML) so a sneaky address can't add code to the page.
+    document.getElementById("wrong-address").textContent = window.location.pathname;
+  </script>
+</body>
+
+</html>
