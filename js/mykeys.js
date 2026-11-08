@@ -23,7 +23,8 @@ function forgetName() {
 //   await makeHash("their password")
 // then paste the result in here.
 var accounts = {
-  "arjun": "162a77baa33f471275f5a10adf547a8b4cd4e1cafc54b923f09757ae65471c5b"
+  "arjun": "162a77baa33f471275f5a10adf547a8b4cd4e1cafc54b923f09757ae65471c5b",
+  "sanskriti": "4cb0b61a0a1cccd0801e7a34e68b5ec877b2ec66cabc7ab288c4be05c333bcc0"
 };
 
 // Scrambles text with SHA-256, a hashing recipe built into every browser.
