@@ -24,7 +24,8 @@ function forgetName() {
 // then paste the result in here.
 var accounts = {
   "arjun": "162a77baa33f471275f5a10adf547a8b4cd4e1cafc54b923f09757ae65471c5b",
-  "sanskriti": "4cb0b61a0a1cccd0801e7a34e68b5ec877b2ec66cabc7ab288c4be05c333bcc0"
+  "sanskriti": "4cb0b61a0a1cccd0801e7a34e68b5ec877b2ec66cabc7ab288c4be05c333bcc0",
+  "tryston": "1c8f7146a5b7c4726b6af68c758d4a05bd64ce816556b1d3defe419bf7f680d2"
 };
 
 // Scrambles text with SHA-256, a hashing recipe built into every browser.
